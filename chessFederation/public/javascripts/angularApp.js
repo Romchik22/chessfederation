@@ -75,6 +75,30 @@ app.config([
             }
         };
 
+        auth.isModerator = function () {
+            var token = auth.getToken();
+
+            if(token){
+                var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+                return payload.role == "moderator" && payload.exp > Date.now() / 1000;
+            } else {
+                return false;
+            }
+        };
+        
+        auth.isPublisher = function () {
+            var token = auth.getToken();
+
+            if(token){
+                var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+                return payload.role == "publisher" && payload.exp > Date.now() / 1000;
+            } else {
+                return false;
+            }
+        };
+
         auth.currentUser = function () {
             if(auth.isLoggedIn()){
                 var token = auth.getToken();
