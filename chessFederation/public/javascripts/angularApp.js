@@ -101,7 +101,7 @@ app.config([
         };
 
         return auth;
-    }])
+    }]);
 app.factory('posts', ['$http', 'auth', function ($http, auth) {
         var o = {
             posts: [{title: 'hello', link:'', upvotes:0, comments: [
@@ -215,6 +215,7 @@ app.controller('AuthCtrl', [
         };
 
         $scope.login = function () {
+            debugger;
             auth.logIn($scope.user).error(function (error) {
                 $scope.error = error;
             }).then(function () {
