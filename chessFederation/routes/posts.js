@@ -37,7 +37,14 @@ router.param('comment', function (req, res, next, id) {
 
 router.get('/', postsController.getPosts);
 
-router.post('/', auth, postsController.savePost);
+router.post('/', auth, function (req, res, next) {
+    //payload
+    if (req.payload.role == "moderator") {
+        postsController.savePost(req, res, next);
+    } else {
+        res.send(401, 'Unauthorized');
+    }
+});
 
 router.get('/:post', postsController.getPost);
 

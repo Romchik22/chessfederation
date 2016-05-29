@@ -215,7 +215,6 @@ app.controller('AuthCtrl', [
         };
 
         $scope.login = function () {
-            debugger;
             auth.logIn($scope.user).error(function (error) {
                 $scope.error = error;
             }).then(function () {
