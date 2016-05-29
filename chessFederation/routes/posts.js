@@ -39,11 +39,20 @@ router.get('/', postsController.getPosts);
 
 router.post('/', auth, function (req, res, next) {
     //payload
+
+
     if (req.payload.role == "moderator") {
+        req.body.status = "accepted";
         postsController.savePost(req, res, next);
-    } else {
-        res.send(401, 'Unauthorized');
     }
+    if (req.payload.role == "publisher") {
+        req.body.status = "inProgress";
+        postsController.savePost(req, res, next);
+    }
+
+    //else {
+      //  res.send(401, 'Unauthorized');
+    //}
 });
 
 router.get('/:post', postsController.getPost);

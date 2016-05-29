@@ -5,7 +5,7 @@ var Comment = mongoose.model('Comment');
 module.exports = {
     // Get /posts
     getPosts: function (req, res, next) {
-        Post.find(function (err, posts) {
+        Post.find({status:"accepted"},function (err, posts) {
             if (err) {
                 return next(err);
             }
@@ -33,6 +33,7 @@ module.exports = {
         //
         //   res.json(post);
         // });
+
         res.json(req.post);
     },
 

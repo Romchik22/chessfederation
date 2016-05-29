@@ -3,6 +3,7 @@ var mogoose = require('mongoose');
 var PostSchema = new mogoose.Schema({
     title: String,
     link: String,
+    status: String,
     upvotes: {type: Number, default: 0},
     comments:[{type: mogoose.Schema.Types.ObjectId, ref: 'Comment'}]
 });
