@@ -12,7 +12,16 @@ module.exports = {
             res.json(posts);
         });
     },
-
+    
+    getPandingPost: function (req, res, next) {
+        Post.find({status:"inProgress"},function (err, posts) {
+            if (err) {
+                return next(err);
+            }
+            res.json(posts);
+        });
+    },
+    
     // Post /posts
     savePost: function (req, res, next) {
         var post = new Post(req.body);

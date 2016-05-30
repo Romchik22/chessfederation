@@ -54,6 +54,7 @@ router.post('/', auth, function (req, res, next) {
       //  res.send(401, 'Unauthorized');
     //}
 });
+router.get('/suggestedposts', postsController.getPandingPost);
 
 router.get('/:post', postsController.getPost);
 

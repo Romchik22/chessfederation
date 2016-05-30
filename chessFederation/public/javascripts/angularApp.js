@@ -138,6 +138,7 @@ app.factory('posts', ['$http', 'auth', function ($http, auth) {
             angular.copy(data, o.posts);
         });
     };
+
     o.create = function (post) {
         return $http.post('/posts', post,
             {headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -206,7 +207,8 @@ app.controller('PostCtrl',[
     function ($scope, posts, post, auth) {
         $scope.post = post;
         $scope.isLoggedIn = auth.isLoggedIn;
-
+        $scope.isModerator = auth.isModerator;
+        $scope.hyi = "sosi";
         $scope.addComment = function(){
             if($scope.body === '') { return; }
             posts.addComments(post._id, {
