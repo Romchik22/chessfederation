@@ -27,6 +27,16 @@ app.config([
                 }]
             }
         });
+        $stateProvider.state('suggestedposts',{
+            url: '/suggestedposts',
+            templateUrl: '/suggestedposts.html',
+            controller: 'PostCtrl',
+            resolve : {
+                post : ['$stateParams', 'posts', function (posts) {
+                    return posts.getPandingPost();
+                }]
+            }
+        });
         $stateProvider.state('login', {
             url: '/login',
             templateUrl: '/login.html',
@@ -259,3 +269,4 @@ app.controller('NavCtrl', [
         $scope.logOut = auth.logOut;
     }
 ]);
+
