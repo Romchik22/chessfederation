@@ -31,9 +31,19 @@ app.config([
             url: '/suggestedposts',
             templateUrl: '/suggestedposts.html',
             controller: 'PostCtrl',
+            //todo remove after explanation to RR
+            // resolve : {
+            //     post : ['$stateParams', 'posts', function (posts) {
+            //         return posts.getPandingPost();
+            //     }]
+            // '$stateParams', 'posts' <--- this is arguments, which are passing to function. 
+            //  In code above argument posts is $stateParams service, but not posts service, as you believe  
+            // }
             resolve : {
-                post : ['$stateParams', 'posts', function (posts) {
-                    return posts.getPandingPost();
+                post : ['posts', function (posts) {
+                    // Your method (getPandingPost) is not exist in posts service. 
+                    // posts <--- this is service in angular app, but not a posts controller on back-end 
+                    return posts.getAll();
                 }]
             }
         });
@@ -216,6 +226,9 @@ app.controller('PostCtrl',[
     'auth',
     function ($scope, posts, post, auth) {
         $scope.post = post;
+        // This is temporary solutions, for fast explanation. 
+        // We must find best way to implement this logic.
+        $scope.posts = post.data;
         $scope.isLoggedIn = auth.isLoggedIn;
         $scope.addComment = function(){
             if($scope.body === '') { return; }
