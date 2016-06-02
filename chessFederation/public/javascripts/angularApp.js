@@ -31,19 +31,9 @@ app.config([
             url: '/suggestedposts',
             templateUrl: '/suggestedposts.html',
             controller: 'PostCtrl',
-            //todo remove after explanation to RR
-            // resolve : {
-            //     post : ['$stateParams', 'posts', function (posts) {
-            //         return posts.getPandingPost();
-            //     }]
-            // '$stateParams', 'posts' <--- this is arguments, which are passing to function. 
-            //  In code above argument posts is $stateParams service, but not posts service, as you believe  
-            // }
             resolve : {
                 post : ['posts', function (posts) {
-                    // Your method (getPandingPost) is not exist in posts service. 
-                    // posts <--- this is service in angular app, but not a posts controller on back-end 
-                    return posts.getAll();
+                    return posts.getPendingPost();
                 }]
             }
         });
@@ -158,7 +148,11 @@ app.factory('posts', ['$http', 'auth', function ($http, auth) {
             angular.copy(data, o.posts);
         });
     };
-
+    o.getPendingPost= function () {
+        return $http.get('/posts/suggestedposts').success(function (data) {
+            angular.copy(data, o.posts);
+        });
+    };
     o.create = function (post) {
         return $http.post('/posts', post,
             {headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -178,6 +172,7 @@ app.factory('posts', ['$http', 'auth', function ($http, auth) {
             return res.data;
         });
     };
+    
     o.addComments = function(id, comment) {
         return $http.post('/posts/' + id + '/comments', comment,{
             headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -200,14 +195,13 @@ app.controller('MainCtrl', [
     'posts',
     'auth',
     function ($scope, posts, auth) {
-        $scope.test = 'Hi user';
         $scope.posts = posts.posts;
         $scope.isLoggedIn = auth.isLoggedIn;
         $scope.addPost = function () {
             if(!$scope.title || $scope.title === '') {return;}
             posts.create({
                 title: $scope.title,
-                link: $scope.link
+                link: $scope.title,
             });
             $scope.title = '';
             $scope.link = '';
@@ -234,7 +228,6 @@ app.controller('PostCtrl',[
             if($scope.body === '') { return; }
             posts.addComments(post._id, {
                 body: $scope.body,
-                author: 'user'
             }).success(function(comment) {
                 $scope.post.comments.push(comment);
             });

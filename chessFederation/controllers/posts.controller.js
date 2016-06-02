@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
-
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 module.exports = {
     // Get /posts
     getPosts: function (req, res, next) {
@@ -25,7 +26,8 @@ module.exports = {
     // Post /posts
     savePost: function (req, res, next) {
         var post = new Post(req.body);
-        // post.author = req.payload.username;
+        post.author = req.payload.username;
+        post.createdAt = new Date().getTime();
         post.save(function (err, post) {
             if (err) {
                 return next(err);
@@ -91,6 +93,24 @@ module.exports = {
                 return next(err);
             }
             res.json(comment);
+        });
+    },
+    // delete /posts/suggestedposts/:post
+    removePost: function (req, res, next) {
+        if(ObjectId(req.params._id) == "5750014d9fd9903f24a98a11"){
+            console.log('ppc')
+        }  //big problems
+        console.log(ObjectId(req.params.id));
+        console.log(req.body.id);
+
+        Post.findOneAndRemove({_id: ObjectId(req.params.id)}, function (err) {
+                    if (err) {
+                        console.log('haha');
+                        return next(err);
+                    }
+                    console.log('Successfuly deleted');
+                    res.send('');
+
         });
     }
 };

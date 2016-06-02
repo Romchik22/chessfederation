@@ -4,6 +4,8 @@ var PostSchema = new mogoose.Schema({
     title: String,
     link: String,
     status: String,
+    author: String,
+    createdAt: { type: Date, expires: 60*60*24 },
     upvotes: {type: Number, default: 0},
     comments:[{type: mogoose.Schema.Types.ObjectId, ref: 'Comment'}]
 });
