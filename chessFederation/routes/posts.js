@@ -56,7 +56,7 @@ router.post('/', auth, function (req, res, next) {
 });
 router.get('/suggestedposts', postsController.getPandingPost);
 
-router.delete('/suggestedposts/:post', postsController.removePost)
+router.delete('/suggestedposts/:post', postsController.removePost);
 
 router.get('/:post', postsController.getPost);
 

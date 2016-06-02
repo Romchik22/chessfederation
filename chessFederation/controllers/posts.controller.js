@@ -97,20 +97,13 @@ module.exports = {
     },
     // delete /posts/suggestedposts/:post
     removePost: function (req, res, next) {
-        if(ObjectId(req.params._id) == "5750014d9fd9903f24a98a11"){
-            console.log('ppc')
-        }  //big problems
-        console.log(ObjectId(req.params.id));
-        console.log(req.body.id);
-
-        Post.findOneAndRemove({_id: ObjectId(req.params.id)}, function (err) {
-                    if (err) {
-                        console.log('haha');
-                        return next(err);
-                    }
-                    console.log('Successfuly deleted');
-                    res.send('');
-
-        });
+        Post.find({id: ObjectId(req.params.post)}).remove(afterRemove);
+        function afterRemove(err) {
+            if (err) {
+                //    todo investigate exception handler
+                console.log("error while deleting post");
+            }
+            next(req, res);
+        }
     }
 };
