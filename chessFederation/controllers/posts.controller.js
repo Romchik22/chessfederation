@@ -97,13 +97,11 @@ module.exports = {
     },
     // delete /posts/suggestedposts/:post
     removePost: function (req, res, next) {
-        Post.find({id: ObjectId(req.params.post)}).remove(afterRemove);
-        function afterRemove(err) {
+        Post.findOneAndRemove({id: ObjectId(req.params.post)}, function (err) {
             if (err) {
-                //    todo investigate exception handler
-                console.log("error while deleting post");
+                return next(err);
             }
-            next(req, res);
-        }
+            console.log('User deleted!');
+        });
     }
-};
+}

@@ -153,6 +153,11 @@ app.factory('posts', ['$http', 'auth', function ($http, auth) {
             angular.copy(data, o.posts);
         });
     };
+    o.removePost = function (id) {
+        return $http.delete('/posts/suggestedposts/' + id).success(function (data) {
+            angular.copy(data, o.posts);
+        });
+    };
     o.create = function (post) {
         return $http.post('/posts', post,
             {headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -235,6 +240,13 @@ app.controller('PostCtrl',[
         };
         $scope.incrementUpvotes = function(comment) {
            posts.upvoteComment(post, comment);
+        };
+        $scope.removePosts = function (postId) {
+            posts.removePost(postId).then(function (xxx) {
+                posts.getPendingPost().then(function () {
+                    $scope.posts = posts.posts;
+                });
+            });
         };
     }
 ]);
