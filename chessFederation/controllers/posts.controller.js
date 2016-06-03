@@ -101,7 +101,7 @@ module.exports = {
             if (err) {
                 return next(err);
             }
-            console.log('User deleted!');
+            console.log('Post deleted!');
         });
     }
 }
