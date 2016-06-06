@@ -13,8 +13,8 @@ module.exports = {
             res.json(posts);
         });
     },
-    
-    getPandingPost: function (req, res, next) {
+
+    getPendingPost: function (req, res, next) {
         Post.find({status:"inProgress"},function (err, posts) {
             if (err) {
                 return next(err);
@@ -22,7 +22,18 @@ module.exports = {
             res.json(posts);
         });
     },
-    
+
+    // patch /posts/suggestedposts/:post
+    approvePost: function (req, res, next) {
+        Post.findByIdAndUpdate(req.params.post, { status: 'accepted' } , function (err) {
+            if (err) {
+                res.send(err);
+            }
+            console.log('status changed');
+            res.send(200);
+        });
+    },
+
     // Post /posts
     savePost: function (req, res, next) {
         var post = new Post(req.body);
@@ -34,6 +45,7 @@ module.exports = {
             }
             res.json(post);
         });
+
     },
 
     // Get /posts/:post
@@ -95,13 +107,30 @@ module.exports = {
             res.json(comment);
         });
     },
+    
     // delete /posts/suggestedposts/:post
     removePost: function (req, res, next) {
-        Post.findOneAndRemove({id: ObjectId(req.params.post)}, function (err) {
+        Post.findByIdAndRemove(req.params.post, function (err) {
             if (err) {
-                return next(err);
+                next(err);
+                res.send(err);
             }
             console.log('Post deleted!');
+            res.send(200);
+        });
+    },
+
+    saveChange: function (req, res, next) {
+
+        var post = new Post(req.body);
+        
+        Post.findByIdAndUpdate(req.params.post,{ title: post.title, body: post.body }  ,function (err) {
+            if (err) {
+                next(err);
+                res.send(err);
+            }
+            console.log('Post Update!');
+            res.send(200);
         });
     }
-}
+};

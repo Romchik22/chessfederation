@@ -14,6 +14,9 @@
         <nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
             <ul class="nav navbar-nav">
                 <li ng-show="isModerator()">
+                    <a class="btn btn-success" href="/#/userlist" >UserList</a>
+                </li>
+                <li ng-show="isModerator()">
                     <a class="btn btn-danger" href="/#/suggestedposts" >SuggestedPosts</a>
                 </li>
                 <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
@@ -29,7 +32,7 @@
 
             </div>
         </div>
-                <script type="text/ng-template" id="/home.html">
+        <script type="text/ng-template" id="/home.html">
                     <div class="page-header">
                         <h1> Chess Federation</h1>
                     </div>
@@ -38,10 +41,10 @@
                 <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
                     {{post.upvotes}}
                 <span style="font-size:20px; margin-left:10px;">
-                      <a ng-show="post.link" href="{{post.link}}">
+                      <a ng-show="post.body" href="{{post.body}}">
                     {{post.title}}
                 </a>
-                    <span ng-hide="post.link">
+                    <span ng-hide="post.body">
                         {{post.title}}
                     </span>
                     <span ng-show="post.author"> posted by <a>{{post.author}}</a> |</span>
@@ -64,7 +67,7 @@
                     <input type="text" class="form-control" placeholder="Title" ng-model="title"> </input>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Link" ng-model="link"> </input>
+                    <input type="text" class="form-control" placeholder="Body" ng-model="body"> </input>
                 </div>
                 <button type="submit" class="btn btn-primary">Post</button>
             </form>
@@ -73,10 +76,10 @@
         <script type="text/ng-template" id="/posts.html">
             <div class="page-header">
                 <h3>
-                    <a ng-show="post.link" href="{{post.link}}">
+                    <a ng-show="post.body" href="{{post.body}}">
                         {{post.title}}
                     </a>
-                        <span ng-hide="post.link">
+                        <span ng-hide="post.body">
                             {{post.title}}
                         </span>
                 </h3>
@@ -116,12 +119,93 @@
             <td>{{post.author}}</td>
             <td>{{post.createdAt}}</td>
             <td>{{post.status}}</td>
-            <td><a class="btn btn-success" href="/#/" ng-click="approvePost(post.id)">approve</a></td>
-            <td><a class="btn btn-primary" href="/#/" ng-click="changePost(post.id)">change</a></td>
+            <td><a class="btn btn-success" ng-click="approvePosts(post._id)">approve</a></td>
+            <td><a class="btn btn-primary" href="/#/suggestedposts/edit/{{post._id}}">change</a></td>
             <td><button class="btn btn-warning"  ng-click="removePosts(post._id)">delete</button></td>
             </tr>
             </table>
+        </script>
 
+        <script type="text/ng-template" id="/edit.html">
+
+            <form>
+                <div class="containerTitle">
+                    <div class="title"> Title:   <input type="text" name="title" value="{{post.title}}" ng-model="post.title"></div>
+                </div>
+                <div class="containerBody">
+                    <div class="body"> Body:   <input type="text" name="body" value="{{post.body}}" ng-model="post.body"></div>
+                </div>
+                <button type="submit" class="btn btn-primary" ng-click="saveChanges(post._id)">Save</button>
+            </form>
+               <div ng-show="true">
+            <a  class="btn btn-success" ng-click="approvePosts(post._id)" href="/#/suggestedposts">approve</a>
+            <a class="btn btn-warning" href="/#/suggestedposts" ng-click="removePosts(post._id)">delete</a>
+               </div>
+        </script>
+
+        <script type="text/ng-template" id="/useredit.html">
+                <form>
+                    <div>
+                        <label>UserName</label>
+                        <input type="text" name="username"  value="{{user.username}}" ng-model="user.username"/>
+                    </div>
+                    <div>
+                        <label for="firstname">FirstName</label>
+                        <input type="text" id="firstname" value="{{user.firstName}}" ng-model="user.firstName"/>
+                    </div>
+                    <div>
+                        <label for="lastname">SecondName</label>
+                        <input type="text" id="lastname" value="{{user.lastName}}" ng-model="user.lastName"/>
+                    </div>
+                    <div>
+                        <label for="role">Role</label>
+                        <input type="text" id="role" value="{{user.role}}" ng-model="user.role"/>
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="text" id="email" value="{{user.email}}" ng-model="user.email"/>
+                    </div>
+                    <div>
+                        <label for="sex">Sex</label>
+                        <input type="text" id="sex" value="{{user.sex}}" ng-model="user.sex"/>
+                    </div>
+                    <div>
+                        <label for="country">Country</label>
+                        <input type="text" id="country" value="{{user.country}}" ng-model="user.country"/>
+                    </div>
+                    <div>
+                        <label for="city">City</label>
+                        <input type="text" id="city" value="{{user.city}}" ng-model="user.city"/>
+                    </div>
+                    <div>
+                        <label for="rank">Rank</label>
+                        <input type="text" id="rank" value="{{user.rank}}" ng-model="user.rank"/>
+                    </div>
+                    <div>
+                        <label></label>
+                        <button type="submit" class="btn btn-primary" ng-click="saveUserChanges(user._id)">Save</button>
+                    </div>
+                </form>
+                <div>
+                    <a class="btn btn-success" ng-click="changeRoles(user._id)" href="/#/userlist">changeRole</a>
+                    <a class="btn btn-warning"  href="/#/userlist" ng-click="removeUsers(user._id)">delete</a>
+                </div>
+        </script>
+
+        <script type="text/ng-template" id="/userlist.html">
+            <table>
+                <tr>
+                    <th>UserName</th>
+                    <th>Role</th>
+                </tr>
+                <tr ng-repeat="user in users | orderBy : '-username'">
+                    <td>{{user.username}}</td>
+                    <td>{{user.role}}</td>
+                    <td><a class="btn btn-success" ng-click="changeRoles(user._id)">changeRole</a></td>
+                    <td><a class="btn btn-primary" href="/#/userlist/useredit/{{user._id}}">change</a></td>
+                    <td><button class="btn btn-warning"  ng-click="removeUsers(user._id)">delete</button></td>
+                </tr>
+            </table>
         </script>
 
         <script type ="text/ng-template" id="/register.html">

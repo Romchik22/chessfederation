@@ -2,7 +2,7 @@ var mogoose = require('mongoose');
 
 var PostSchema = new mogoose.Schema({
     title: String,
-    link: String,
+    body: String,
     status: String,
     author: String,
     createdAt: { type: Date, expires: 60*60*24 },

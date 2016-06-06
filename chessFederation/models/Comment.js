@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var CommentSchema = new mongoose.Schema({
     body: String,
     author: String,
+    createdAt: { type: Date, expires: 60*60*24 },
     upvotes: {type: Number, default: 0},
     post: { type: mongoose.Schema.Types.ObjectId, ref: 'Post'}
 });

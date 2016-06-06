@@ -50,13 +50,19 @@ router.post('/', auth, function (req, res, next) {
         postsController.savePost(req, res, next);
     }
 
-    //else {
-      //  res.send(401, 'Unauthorized');
-    //}
 });
-router.get('/suggestedposts', postsController.getPandingPost);
+
+router.get('/suggestedposts', postsController.getPendingPost);
 
 router.delete('/suggestedposts/:post', postsController.removePost);
+
+router.patch('/suggestedposts/:post', postsController.approvePost);
+
+router.get('/suggestedposts/edit/:post', postsController.getPost);
+
+router.patch('/suggestedposts/edit/:post', postsController.saveChange);
+
+router.patch('/suggestedposts/:post', postsController.approvePost);
 
 router.get('/:post', postsController.getPost);
 
