@@ -51,13 +51,13 @@ module.exports = {
     // Get /posts/:post
     getPost: function (req, res, next) {
         // Todo Use the populate() function to retrieve comments along with posts
-        // req.post.populate('comments', function (err, post) {
-        //   if(err){return next(err);}
-        //
-        //   res.json(post);
-        // });
+         req.post.populate('comments', function (err, post) {
+          if(err){return next(err);}
+        
+           res.json(post);
+         });
 
-        res.json(req.post);
+       // res.json(req.post);
     },
 
     // Put /posts/:post/upvote
@@ -77,7 +77,8 @@ module.exports = {
         var comment = new Comment(req.body);
         comment.post = req.post;
         comment.author = req.payload.username;
-
+        comment.createdAt = new Date().getTime();
+        
         comment.save(function (err, comment) {
             if (err) {
                 return next(err);
@@ -95,6 +96,21 @@ module.exports = {
     // Get /posts/:post/comments/:comment
     getComment: function (req, res, next) {
         res.json(req.comment);
+    },
+
+    // delete /posts/:post/comments/:comment
+    deleteComment: function (req, res, next) {
+        Comment.findByIdAndRemove(req.params.comment, function (err) {
+            if (err) {
+                next(err);
+                res.send(err);
+            }
+                req.post.populate('comments', function (err, post) {
+                    if(err){return next(err);}
+
+                    res.json(post);
+                });
+                });
     },
 
     // Put /posts/:post/comments/:comment/upvote

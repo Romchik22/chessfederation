@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-    <head>
-        <title>Chess Federation</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+<head>
+    <title>Chess Federation</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 
-        <script src="/javascripts/angular.min.js"></script>
-        <script src="/javascripts/angular-ui-router.js"></script>
-        <script src="/javascripts/angularApp.js"></script>
-
-        <style> .glyphicon-thumbs-up { cursor:pointer } </style>
-    </head>
-    <body ng-app="chessFederation">
+    <script src="/javascripts/angular.min.js"></script>
+    <script src="/javascripts/angular-ui-router.js"></script>
+    <script src="/javascripts/angularApp.js"></script>
+    <style> .glyphicon-thumbs-up {
+            cursor: pointer
+        } </style>
+</head>
+<body ng-app="chessFederation">
+<div id="container">
+    <div id="header">
+        <h1><img src="images/logo3.png" alt=""/></h1>
         <nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
             <ul class="nav navbar-nav">
-                <li ng-show="isModerator()">
-                    <a class="btn btn-success" href="/#/userlist" >UserList</a>
+                <li ng-show="isModerator() || isPublisher()">
+                    <a class="btn btn-primary" href="/#/addpost">Добавить статью</a>
                 </li>
                 <li ng-show="isModerator()">
-                    <a class="btn btn-danger" href="/#/suggestedposts" >SuggestedPosts</a>
+                    <a class="btn btn-success" href="/#/userlist">Список пользователей</a>
+                </li>
+                <li ng-show="isModerator()">
+                    <a class="btn btn-danger" href="/#/suggestedposts">Придложенные статьи</a>
                 </li>
                 <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
                 <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
@@ -25,232 +32,415 @@
                 <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
             </ul>
         </nav>
-        <div class="row">
-            <!--<ui-view></ui-view>-->
-            <!--Are you sure, that code above, which you deleted, are equivalent to set directive as an attribute to dom element () -->
-            <div ui-view class="col-md-6 col-md-offset-3">
+        <div class="clear"></div>
+    </div>
+    <div id="nav">
+        <ul>
+            <li class="selected"><a href="index2.html">Home</a>
 
-            </div>
-        </div>
-        <script type="text/ng-template" id="/home.html">
-                    <div class="page-header">
-                        <h1> Chess Federation</h1>
+            </li>
+            <li><a href="aboutus.html">О Нас</a>
+                <ul>
+                    <li><a href="history.html">История</a></li>
+                    <li><a href="rules.html">Правила</a></li>
+                    <li><a href="secretariat.html">Члены федерации</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Турниры</a>
+
+                <ul>
+
+                    <li><a href="registration.html">Регистрация</a></li>
+                    <li><a href="calendar2015.html">Календарь</a></li>
+                    <li><a href="schoolchess.html">Шахматы в школах</a></li>
+                    <li><a href="intl_tournaments.html">Международные турниры</a></li>
+                    <li><a href="olympiad.html">Олимпиада</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Календарь</a>
+
+                <ul>
+
+                    <li><a href="calendar2015.html">2015 Календарь</a></li>
+                    <li><a href="calendar2016.html">2016 Календарь</a></li>
+
+                </ul>
+            </li>
+
+
+            <li><a href="articles.html">aСтатьи</a></li>
+
+            <li><a href="#">Инфо о шахматистах</a>
+                <ul>
+
+                    <li><a href="ratings.html">Рейтинги Украины</a></li>
+                    <li><a href="fidetitles.html">Fide рейтинги</a></li>
+                    <li><a href="juniorchess.html">Юниоры</a></li>
+                    <li><a href="femalechess.html">Женщины</a></li>
+
+                </ul>
+            </li>
+            <li><a href="#">Ссылки и архивы</a>
+                <ul>
+
+                    <li><a href="sponsors.html">Спонсоры</a></li>
+                    <li><a href="fidechess.html">Fide</a></li>
+                    <li><a href="games.html">Игры</a></li>
+                </ul>
+
+            </li>
+            <li><a href="#">Участие</a>
+                <ul>
+
+                    <li><a href="join.html">Присоеденится к нам</a></li>
+                    <li><a href="jcfmembers.html">Участники</a></li>
+                    <li><a href="pca.html">Соглашение</a></li>
+
+                </ul>
+
+
+            </li>
+            <li><a href="contact.html">Контакты</a></li>
+        </ul>
+    </div>
+    <div id="body">
+        <div id="content">
+            <h1>Харьковская федерация шахмат</h1>
+            <div class="box">
+                <div class="container">
+                    <!--<ui-view></ui-view>-->
+                    <!--Are you sure, that code above, which you deleted, are equivalent to set directive as an attribute to dom element () -->
+                    <div ui-view class="col-md-6">
+
                     </div>
+                </div>
 
-            <div ng-repeat="post in posts | orderBy : '-upvotes'">
-                <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
-                    {{post.upvotes}}
+                <script type="text/ng-template" id="/addpost.html">
+
+                    <form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top: 30px;">
+
+                        <h3> Add a new post</h3>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Title" ng-model="title"> </input>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Body" ng-model="body"> </input>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post</button>
+                    </form>
+                </script>
+
+                <script type="text/ng-template" id="/home.html">
+
+
+                    <div ng-repeat="post in posts | orderBy : '-upvotes'">
+
+                        <h2><a href="/#/posts/{{post._id}}">{{post.title}}</a></h2>
+                        {{post.body}}
                 <span style="font-size:20px; margin-left:10px;">
-                      <a ng-show="post.body" href="{{post.body}}">
-                    {{post.title}}
-                </a>
-                    <span ng-hide="post.body">
-                        {{post.title}}
-                    </span>
+                    </br>
                     <span ng-show="post.author"> posted by <a>{{post.author}}</a> |</span>
                 </span>
+                        <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
+                        {{post.upvotes}}
                 <span>
                     <a href="/#/posts/{{post._id}}">Comments</a>
                 </span>
-            </div>
-
-
-
-                    <div ng-hide="isLoggedIn()">
-                        <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+                        <span>Статья добавлена : {{post.createdAt}}</span>
                     </div>
-            <form ng-submit="addPost()" ng-show ="isLoggedIn()" style="margin-top: 30px;">
-
-                <h3> Add a new post</h3>
-
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Title" ng-model="title"> </input>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Body" ng-model="body"> </input>
-                </div>
-                <button type="submit" class="btn btn-primary">Post</button>
-            </form>
                 </script>
 
-        <script type="text/ng-template" id="/posts.html">
-            <div class="page-header">
-                <h3>
-                    <a ng-show="post.body" href="{{post.body}}">
-                        {{post.title}}
-                    </a>
+                <script type="text/ng-template" id="/posts.html">
+                    <div class="page-header">
+                        <h3>
+                            <a ng-show="post.body" href="{{post.body}}">
+                                {{post.title}}
+                            </a>
                         <span ng-hide="post.body">
                             {{post.title}}
                         </span>
-                </h3>
-            </div>
-            <div ng-repeat="comment in post.comments | orderBy: '-upvotes'">
-                <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
-                {{comment.upvotes}}  -by {{comment.author}}
+                        </h3>
+                    </div>
+                    <div ng-repeat="comment in post.comments | orderBy: '-upvotes'">
+                        <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+                        {{comment.upvotes}} -by {{comment.author}}
                 <span style="font-size:20px; margin-left:10px;">
-                    {{comment.body}}
+                    {{comment.body}} - {{comment.createdAt}} <a
+                            ng-click="deleteComments(post._id, comment._id)">delete</a>
                 </span>
+                    </div>
+
+                    <div ng-hide="isLoggedIn()">
+                        <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you
+                            can comment.</h3>
+                    </div>
+
+                    <form ng-submit="addComment()" ng-show="isLoggedIn()" style="margin-top:30px;">
+                        <h3>Add a new comment</h3>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Comment" ng-model="body"> </input>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post</button>
+                    </form>
+                </script>
+
+                <script type="text/ng-template" id="/suggestedposts.html">
+                    <table>
+                        <tr>
+                            <th>Title Post</th>
+                            <th>Author</th>
+                            <th>Created</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr ng-repeat="post in posts | orderBy : '-createdAt'">
+                            <td>{{post.title}}</td>
+                            <td>{{post.author}}</td>
+                            <td>{{post.createdAt}}</td>
+                            <td>{{post.status}}</td>
+                            <td><a class="btn btn-success" ng-click="approvePosts(post._id)">approve</a></td>
+                            <td><a class="btn btn-primary" href="/#/suggestedposts/edit/{{post._id}}">change</a></td>
+                            <td>
+                                <button class="btn btn-warning" ng-click="removePosts(post._id)">delete</button>
+                            </td>
+                        </tr>
+                    </table>
+                </script>
+
+                <script type="text/ng-template" id="/edit.html">
+
+                    <form>
+                        <div class="containerTitle">
+                            <div class="title"> Title: <input type="text" name="title" value="{{post.title}}"
+                                                              ng-model="post.title"></div>
+                        </div>
+                        <div class="containerBody">
+                            <div class="body"> Body: <input type="text" name="body" value="{{post.body}}"
+                                                            ng-model="post.body"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" ng-click="saveChanges(post._id)">Save</button>
+                    </form>
+                    <div ng-show="true">
+                        <a class="btn btn-success" ng-click="approvePosts(post._id)"
+                           href="/#/suggestedposts">approve</a>
+                        <a class="btn btn-warning" href="/#/suggestedposts" ng-click="removePosts(post._id)">delete</a>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="/useredit.html">
+                    <form>
+                        <div>
+                            <label>UserName</label>
+                            <input type="text" name="username" value="{{user.username}}" ng-model="user.username"/>
+                        </div>
+                        <div>
+                            <label for="firstname">FirstName</label>
+                            <input type="text" id="firstname" value="{{user.firstName}}" ng-model="user.firstName"/>
+                        </div>
+                        <div>
+                            <label for="lastname">SecondName</label>
+                            <input type="text" id="lastname" value="{{user.lastName}}" ng-model="user.lastName"/>
+                        </div>
+                        <div>
+                            <label for="role">Role</label>
+                            <input type="text" id="role" value="{{user.role}}" ng-model="user.role"/>
+                        </div>
+                        <div>
+                            <label for="email">Email</label>
+                            <input type="text" id="email" value="{{user.email}}" ng-model="user.email"/>
+                        </div>
+                        <div>
+                            <label for="sex">Sex</label>
+                            <input type="text" id="sex" value="{{user.sex}}" ng-model="user.sex"/>
+                        </div>
+                        <div>
+                            <label for="country">Country</label>
+                            <input type="text" id="country" value="{{user.country}}" ng-model="user.country"/>
+                        </div>
+                        <div>
+                            <label for="city">City</label>
+                            <input type="text" id="city" value="{{user.city}}" ng-model="user.city"/>
+                        </div>
+                        <div>
+                            <label for="rank">Rank</label>
+                            <input type="text" id="rank" value="{{user.rank}}" ng-model="user.rank"/>
+                        </div>
+                        <div>
+                            <label></label>
+                            <button type="submit" class="btn btn-primary" ng-click="saveUserChanges(user._id)">Save
+                            </button>
+                        </div>
+                    </form>
+                    <div>
+                        <a class="btn btn-success" ng-click="changeRoles(user._id)" href="/#/userlist">changeRole</a>
+                        <a class="btn btn-warning" href="/#/userlist" ng-click="removeUsers(user._id)">delete</a>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="/userlist.html">
+                    <table>
+                        <tr>
+                            <th>UserName</th>
+                            <th>Role</th>
+                        </tr>
+                        <tr ng-repeat="user in users | orderBy : '-username'">
+                            <td>{{user.username}}</td>
+                            <td>{{user.role}}</td>
+                            <td><a class="btn btn-success" ng-click="changeRoles(user._id)">changeRole</a></td>
+                            <td><a class="btn btn-primary" href="/#/userlist/useredit/{{user._id}}">change</a></td>
+                            <td>
+                                <button class="btn btn-warning" ng-click="removeUsers(user._id)">delete</button>
+                            </td>
+                        </tr>
+                    </table>
+                </script>
+
+                <script type="text/ng-template" id="/register.html">
+
+                    <div ng-show="error" class="alert alert-danger row">
+                        <span>{{error.message}}</span>
+                    </div>
+
+                    <form ng-submit="register()" style="margin-top:30px;">
+                        <h3>Register</h3>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Username"
+                                   ng-model="user.username"> </input>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password"
+                                   ng-model="user.password"> </input>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="lastName"
+                                   ng-model="user.lastName"> </input>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="firstName"
+                                   ng-model="user.firstName"> </input>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="email"
+                                   ng-model="user.email"> </input>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="city"
+                                   ng-model="user.city"> </input>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="country"
+                                   ng-model="user.country"> </input>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </script>
+
+                <script type="text/ng-template" id="/login.html">
+                    <div class="page-header">
+                        <h1>ChessFederation</h1>
+                    </div>
+
+                    <div ng-show="error" class="alert alert-danger row">
+                        <span>{{ error.message }}</span>
+                    </div>
+
+                    <form ng-submit="login()" style="margin-top:30px;">
+                        <h3>Log In</h3>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Username"
+                                   ng-model="user.username"> </input>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password"
+                                   ng-model="user.password"> </input>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                    </form>
+                </script>
+
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <ul>
+                <li>
+                    <h4><span>Важные ссылки</span></h4>
+                    <ul class="blocklist">
+                        <li><a href="calendar2015.html">Каклендарь</a></li>
+                        <li><a href="sponsors.html">Спонсоры</a></li>
+                        <li><a href="schoolchess.html">Школа шахмат</a></li>
+                        <li><a href="articles.html">Предложить мероприятие</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <h4>Школа шахмат</h4>
+                    <ul>
+                        <li>
+                            <p style="margin: 0;">Информация о школе шахмат</p>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <h4>Facebook</h4>
+                    <ul>
+                        <li>
+                            <form method="get" class="searchform" action="http://wpdemo.justfreetemplates.com/">
+                                <p>
+                                    <a href="https://www.facebook.com/jamchess"><img src="images/fb2_small.png" alt=""/></a>
+                                </p>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <h4>Клубы</h4>
+                    <ul>
+                        <li><a href="http://kharkov.chessfederation.org.ua/club/gagarinets"
+                               title="premium templates"><strong>ЦШК</strong></a> - Проспект Гагарина
+                        </li>
+                        <li><a href="http://www.peshka.edu.kh.ua/" title="web hosting"><strong>ШШК "Пешка"</strong></a>
+                            - Академика Павлова
+                        </li>
+                        <li><a href="http://vk.com/shakhrad" title=""><strong>ШШК "Шахрад"" ХНУРЭ</strong></a> -
+                            Проспект Победы
+                        </li>
+                        <li><a href="http://sportschool5.edu.kh.ua/" title=""><strong>ДЮСШ №5</strong></a> - Проспект
+                            Ильича
+                        </li>
+                        <li><a href="http://chesslaw.org.ua/" title=""><strong>ШСК "Юракадемия"</strong></a> -
+                            Пушкинская
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div class="footer-content">
+
+                <span class="sitename">Kharkiv ChessFederation</span>
+                <p class="footer-links">
+                    <a href="index2.html">Главная</a>
+                    <a href="sponsors.html">Cпонсоры</a>
+                    <a href="calendar.html">Календарь</a>
+                    <a href="contact.html">Контакты</a>
+                    <a href="#container" class="backtotop">Вернуться к главной</a>
+                </p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; Федерация Харьковской области по шахматам. <a href="">Все права защищены</a></p>
             </div>
 
-            <div ng-hide="isLoggedIn()">
-                <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</h3>
-            </div>
+        </div>
+    </div>
+</div>
 
-            <form ng-submit="addComment()" ng-show="isLoggedIn()" style="margin-top:30px;">
-                <h3>Add a new comment</h3>
-
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Comment" ng-model="body"> </input>
-                </div>
-                <button type="submit" class="btn btn-primary">Post</button>
-            </form>
-        </script>
-
-        <script type="text/ng-template" id="/suggestedposts.html">
-            <table>
-            <tr>
-                <th>Title Post</th>
-                <th>Author</th>
-                <th>Created</th>
-                <th>Status</th>
-            </tr>
-            <tr ng-repeat="post in posts | orderBy : '-createdAt'">
-            <td>{{post.title}}</td>
-            <td>{{post.author}}</td>
-            <td>{{post.createdAt}}</td>
-            <td>{{post.status}}</td>
-            <td><a class="btn btn-success" ng-click="approvePosts(post._id)">approve</a></td>
-            <td><a class="btn btn-primary" href="/#/suggestedposts/edit/{{post._id}}">change</a></td>
-            <td><button class="btn btn-warning"  ng-click="removePosts(post._id)">delete</button></td>
-            </tr>
-            </table>
-        </script>
-
-        <script type="text/ng-template" id="/edit.html">
-
-            <form>
-                <div class="containerTitle">
-                    <div class="title"> Title:   <input type="text" name="title" value="{{post.title}}" ng-model="post.title"></div>
-                </div>
-                <div class="containerBody">
-                    <div class="body"> Body:   <input type="text" name="body" value="{{post.body}}" ng-model="post.body"></div>
-                </div>
-                <button type="submit" class="btn btn-primary" ng-click="saveChanges(post._id)">Save</button>
-            </form>
-               <div ng-show="true">
-            <a  class="btn btn-success" ng-click="approvePosts(post._id)" href="/#/suggestedposts">approve</a>
-            <a class="btn btn-warning" href="/#/suggestedposts" ng-click="removePosts(post._id)">delete</a>
-               </div>
-        </script>
-
-        <script type="text/ng-template" id="/useredit.html">
-                <form>
-                    <div>
-                        <label>UserName</label>
-                        <input type="text" name="username"  value="{{user.username}}" ng-model="user.username"/>
-                    </div>
-                    <div>
-                        <label for="firstname">FirstName</label>
-                        <input type="text" id="firstname" value="{{user.firstName}}" ng-model="user.firstName"/>
-                    </div>
-                    <div>
-                        <label for="lastname">SecondName</label>
-                        <input type="text" id="lastname" value="{{user.lastName}}" ng-model="user.lastName"/>
-                    </div>
-                    <div>
-                        <label for="role">Role</label>
-                        <input type="text" id="role" value="{{user.role}}" ng-model="user.role"/>
-                    </div>
-                    <div>
-                        <label for="email">Email</label>
-                        <input type="text" id="email" value="{{user.email}}" ng-model="user.email"/>
-                    </div>
-                    <div>
-                        <label for="sex">Sex</label>
-                        <input type="text" id="sex" value="{{user.sex}}" ng-model="user.sex"/>
-                    </div>
-                    <div>
-                        <label for="country">Country</label>
-                        <input type="text" id="country" value="{{user.country}}" ng-model="user.country"/>
-                    </div>
-                    <div>
-                        <label for="city">City</label>
-                        <input type="text" id="city" value="{{user.city}}" ng-model="user.city"/>
-                    </div>
-                    <div>
-                        <label for="rank">Rank</label>
-                        <input type="text" id="rank" value="{{user.rank}}" ng-model="user.rank"/>
-                    </div>
-                    <div>
-                        <label></label>
-                        <button type="submit" class="btn btn-primary" ng-click="saveUserChanges(user._id)">Save</button>
-                    </div>
-                </form>
-                <div>
-                    <a class="btn btn-success" ng-click="changeRoles(user._id)" href="/#/userlist">changeRole</a>
-                    <a class="btn btn-warning"  href="/#/userlist" ng-click="removeUsers(user._id)">delete</a>
-                </div>
-        </script>
-
-        <script type="text/ng-template" id="/userlist.html">
-            <table>
-                <tr>
-                    <th>UserName</th>
-                    <th>Role</th>
-                </tr>
-                <tr ng-repeat="user in users | orderBy : '-username'">
-                    <td>{{user.username}}</td>
-                    <td>{{user.role}}</td>
-                    <td><a class="btn btn-success" ng-click="changeRoles(user._id)">changeRole</a></td>
-                    <td><a class="btn btn-primary" href="/#/userlist/useredit/{{user._id}}">change</a></td>
-                    <td><button class="btn btn-warning"  ng-click="removeUsers(user._id)">delete</button></td>
-                </tr>
-            </table>
-        </script>
-
-        <script type ="text/ng-template" id="/register.html">
-            <div class ="page-header">
-                <h1>ChessFederation</h1>
-            </div>
-
-            <div ng-show ="error" class="alert alert-danger row">
-                <span>{{error.message}}</span>
-            </div>
-
-            <form ng-submit="register()" style="margin-top:30px;">
-                <h3>Register</h3>
-
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username" ng-model="user.username"> </input>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" ng-model="user.password"> </input>
-                </div>
-                <button type="submit" class="btn btn-primary">Register</button>
-            </form>
-        </script>
-
-        <script type="text/ng-template" id="/login.html">
-            <div class="page-header">
-                <h1>ChessFederation</h1>
-            </div>
-
-            <div ng-show="error" class="alert alert-danger row">
-                <span>{{ error.message }}</span>
-            </div>
-
-            <form ng-submit="login()" style="margin-top:30px;">
-                <h3>Log In</h3>
-
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username" ng-model="user.username"> </input>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" ng-model="user.password"> </input>
-                </div>
-                <button type="submit" class="btn btn-primary">Log In</button>
-            </form>
-        </script>
-
-    </body>
+</body>
 </html>

@@ -37,7 +37,7 @@ router.param('comment', function (req, res, next, id) {
 
 router.get('/', postsController.getPosts);
 
-router.post('/', auth, function (req, res, next) {
+router.post('/addpost', auth, function (req, res, next) {
     //payload
 
 
@@ -71,6 +71,8 @@ router.put('/:post/upvote', auth, postsController.upvote);
 router.post('/:post/comments', auth, postsController.addComment);
 
 router.get('/:post/comments/:comment', postsController.getComment);
+
+router.delete('/:post/comments/:comment', postsController.deleteComment);
 
 router.put('/:post/comments/:comment/upvote', auth, postsController.upvoteComment);
 

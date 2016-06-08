@@ -67,6 +67,16 @@ app.config([
                     }]
                 }
             });
+            $stateProvider.state('addpost', {
+                url: '/addpost',
+                templateUrl: '/addpost.html',
+                controller: 'MainCtrl',
+                onEnter: ['$state', 'auth', function($state, auth){
+                    // if(auth.isLoggedIn()){
+                    //     $state.go('home');
+                    // }
+                }]
+            });
             $stateProvider.state('login', {
                 url: '/login',
                 templateUrl: '/login.html',
@@ -234,6 +244,15 @@ app.factory('users',['$http', 'auth', '$q', function ($http, auth, $q) {
         });
         return deferred.promise;
     };
+        o.deleteComment = function (postId, commentId) {
+            var deferred = $q.defer();
+            $http.delete('/posts/' + postId + '/comments/' + commentId).then(function (data) {
+                deferred.resolve(data);
+            }, function (err) {
+                console.error(err);
+            });
+            return deferred.promise;
+        };
 
     o.approvePost = function (id) {
         var deferred = $q.defer();
@@ -254,7 +273,7 @@ app.factory('users',['$http', 'auth', '$q', function ($http, auth, $q) {
     };
 
     o.create = function (post) {
-        return $http.post('/posts', post,
+        return $http.post('/posts/addpost', post,
             {headers: {Authorization: 'Bearer '+auth.getToken()}
             }).success(function (data) {
             o.posts.push(data);
@@ -329,8 +348,6 @@ app.controller('UserController', [
     }
 ]);
 
-
-
 app.controller('MainCtrl', [
     '$scope',
     'users',
@@ -366,6 +383,7 @@ app.controller('PostCtrl',[
         // This is temporary solutions, for fast explanation.
         // We must find best way to implement this logic.
         $scope.posts = post.data;
+       // $scope.comments = post.comments;
         $scope.isLoggedIn = auth.isLoggedIn;
         $scope.addComment = function(){
             if($scope.body === '') { return; }
@@ -400,7 +418,13 @@ app.controller('PostCtrl',[
             });
 
         };
-        
+        $scope.deleteComments = function (postId, commentId) {
+            posts.deleteComment(postId, commentId).then(function (xxx) {
+
+                $scope.posts = ххх;
+
+            });
+        };
     }
 ]);
 

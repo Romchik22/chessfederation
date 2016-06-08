@@ -21,6 +21,12 @@ router.post('/register', function (req, res, next) {
   var user = new User();
 
   user.username = req.body.username;
+  user.lastName = req.body.lastName;
+  user.firstName = req.body.firstName;
+  user.email = req.body.email;
+  user.city = req.body.city;
+  user.country = req.body.country;
+
   user.registeredAt = new Date().getTime();
   user.role = 'user';
   user.setPassword(req.body.password);
