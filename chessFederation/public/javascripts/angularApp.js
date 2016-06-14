@@ -30,7 +30,7 @@ app.config([
             $stateProvider.state('userlist',{
                 url: '/userlist',
                 templateUrl: '/userlist.html',
-                controller: 'UserController',
+                controller: 'UserCtrl',
                 resolve : {
                     user : ['users', function (users) {
                         return users.getUserList();
@@ -103,7 +103,7 @@ app.config([
 
     ]);
 
-    app.factory('auth', ['$http', '$window', function ($http, $window) {
+app.factory('auth', ['$http', '$window', function ($http, $window) {
         var auth = {};
 
         auth.saveToken = function (token) {
@@ -202,7 +202,7 @@ app.factory('users',['$http', 'auth', '$q', function ($http, auth, $q) {
         });
         return deferred.promise;
     };
-    
+
     u.changeRole = function (id) {
         var deferred = $q.defer();
         $http.patch('/users/userlist/' + id).then(function (data) {
@@ -221,7 +221,8 @@ app.factory('users',['$http', 'auth', '$q', function ($http, auth, $q) {
     };
     return u;
 }]);
-    app.factory('posts', ['$http', 'auth', '$q', function ($http, auth, $q) {
+
+app.factory('posts', ['$http', 'auth', '$q', function ($http, auth, $q) {
     var o = {
         posts: []
     };
@@ -263,7 +264,7 @@ app.factory('users',['$http', 'auth', '$q', function ($http, auth, $q) {
         });
         return deferred.promise;
     };
-    
+
     o.saveChange = function (id, post) {
         return $http.patch('/posts/suggestedposts/edit/' + id, post,
             {headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -308,45 +309,6 @@ app.factory('users',['$http', 'auth', '$q', function ($http, auth, $q) {
     return o;
 }]);
 
-app.controller('UserController', [
-    '$scope',
-    'users',
-    'user',
-    'auth',
-    function ($scope, users, user, auth) {
-        $scope.user = user;
-        $scope.users = users.users;
-        $scope.isLoggedIn = auth.isLoggedIn;
-        $scope.removeUsers = function (userId) {
-            users.removeUser(userId).then(function (xxx) {
-                users.getUserList().then(function () {
-                    $scope.users = users.users;
-                });
-            });
-        };
-        $scope.changeRoles = function (userId) {
-            users.changeRole(userId).then(function (xxx) {
-                users.getUserList().then(function () {
-                    $scope.users = users.users;
-                });
-            });
-        };
-        $scope.saveUserChanges = function (userId) {
-            users.saveUserChange(userId, {
-                username: $scope.user.username,
-                firstName: $scope.user.firstName,
-                lastName: $scope.user.lastName,
-                role: $scope.user.role,
-                email: $scope.user.email,
-                sex: $scope.user.sex,
-                country: $scope.user.country,
-                city: $scope.user.city,
-                rank: $scope.user.rank
-            });
-
-        };
-    }
-]);
 
 app.controller('MainCtrl', [
     '$scope',
@@ -369,61 +331,6 @@ app.controller('MainCtrl', [
 
         $scope.incrementUpvotes = function(post) {
             posts.upvote(post);
-        };
-    }
-]);
-
-app.controller('PostCtrl',[
-    '$scope',
-    'posts',
-    'post',
-    'auth',
-    function ($scope, posts, post, auth) {
-        $scope.post = post;
-        // This is temporary solutions, for fast explanation.
-        // We must find best way to implement this logic.
-        $scope.posts = post.data;
-       // $scope.comments = post.comments;
-        $scope.isLoggedIn = auth.isLoggedIn;
-        $scope.addComment = function(){
-            if($scope.body === '') { return; }
-            posts.addComments(post._id, {
-                body: $scope.body
-            }).success(function(comment) {
-                $scope.post.comments.push(comment);
-            });
-            $scope.body = '';
-        };
-        $scope.incrementUpvotes = function(comment) {
-            posts.upvoteComment(post, comment);
-        };
-        $scope.removePosts = function (postId) {
-            posts.removePost(postId).then(function (xxx) {
-                    posts.getPendingPost().then(function () {
-                        $scope.posts = posts.posts;
-                    });
-                });
-        };
-        $scope.approvePosts = function (postId) {
-            posts.approvePost(postId).then(function (xxx) {
-                    posts.getPendingPost().then(function () {
-                        $scope.posts = posts.posts;
-                    });
-                });
-        };
-        $scope.saveChanges = function (postId) {
-            posts.saveChange(postId, {
-                title: $scope.post.title,
-                body: $scope.post.body
-            });
-
-        };
-        $scope.deleteComments = function (postId, commentId) {
-            posts.deleteComment(postId, commentId).then(function (xxx) {
-
-                $scope.posts = ххх;
-
-            });
         };
     }
 ]);

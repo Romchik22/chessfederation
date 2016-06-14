@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var usersController = require("../controllers/users.controller");
+var usersController = require("../User/UserController.js");
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
@@ -20,7 +20,5 @@ router.get('/:user', usersController.getUser);
 router.get('/userlist/useredit/:user', usersController.getUser);
 
 router.patch('/userlist/useredit/:user', usersController.saveChange);
-
-//router.patch('/userlist/:post', usersController.approvePost);
 
 module.exports = router;

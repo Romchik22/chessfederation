@@ -8,9 +8,9 @@ var passport = require('passport');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://sdima:dimas@ds019491.mlab.com:19491/romadiploma');
-require('./models/Comment');
-require('./models/Post');
-require('./models/User');
+require('./Comment/CommentModel');
+require('./Post/PostModel');
+require('./User/UserModel');
 require('./config/passport');
 
 var routes = require('./routes/index');

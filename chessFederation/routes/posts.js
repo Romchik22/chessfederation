@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var postsController = require("../controllers/posts.controller");
+var postsController = require("../Post/PostController.js");
+var commentController = require("../Comment/CommentController.js");
 var jwt = require('express-jwt');
 var auth = jwt({secret: 'SECRET', userProperty:'payload'});
 var mongoose = require('mongoose');
@@ -68,12 +69,12 @@ router.get('/:post', postsController.getPost);
 
 router.put('/:post/upvote', auth, postsController.upvote);
 
-router.post('/:post/comments', auth, postsController.addComment);
+router.post('/:post/comments', auth, commentController.addComment);
 
-router.get('/:post/comments/:comment', postsController.getComment);
+router.get('/:post/comments/:comment', commentController.getComment);
 
-router.delete('/:post/comments/:comment', postsController.deleteComment);
+router.delete('/:post/comments/:comment', commentController.deleteComment);
 
-router.put('/:post/comments/:comment/upvote', auth, postsController.upvoteComment);
+router.put('/:post/comments/:comment/upvote', auth, commentController.upvoteComment);
 
 module.exports = router;
