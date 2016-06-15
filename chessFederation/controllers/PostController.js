@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
-var Schema = mongoose.Schema;
 module.exports = {
     // Get /posts
     getPosts: function (req, res, next) {
@@ -12,7 +11,8 @@ module.exports = {
             res.json(posts);
         });
     },
-
+    
+    // Get /posts/sugestedposts
     getPendingPost: function (req, res, next) {
         Post.find({status:"inProgress"},function (err, posts) {
             if (err) {
@@ -49,22 +49,19 @@ module.exports = {
 
     // Get /posts/:post
     getPost: function (req, res, next) {
-        // Todo Use the populate() function to retrieve comments along with posts
          req.post.populate('comments', function (err, post) {
           if(err){return next(err);}
         
            res.json(post);
          });
-
-       // res.json(req.post);
+        
     },
 
     // Put /posts/:post/upvote
     upvote: function (req, res, next) {
         req.post.upvote(function (err, post) {
-            // todo Investigate err handling
             if (err) {
-                throw err;
+               return next(err);
             }
 
             res.json(post);
@@ -75,22 +72,21 @@ module.exports = {
     removePost: function (req, res, next) {
         Post.findByIdAndRemove(req.params.post, function (err) {
             if (err) {
-                next(err);
-                res.send(err);
+                return next(err);
             }
             console.log('Post deleted!');
             res.send(200);
         });
     },
 
+    // patch /posts/suggestedposts/edit/:post
     saveChange: function (req, res, next) {
 
         var post = new Post(req.body);
         
         Post.findByIdAndUpdate(req.params.post,{ title: post.title, body: post.body }  ,function (err) {
             if (err) {
-                next(err);
-                res.send(err);
+                return next(err);
             }
             console.log('Post Update!');
             res.send(200);

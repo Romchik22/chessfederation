@@ -1,21 +1,21 @@
 /**
  * Created by sobolrr on 14.06.16.
  */
-angular.module('chessFederation', []).factory('posts', ['$http', 'auth', '$q', function ($http, auth, $q) {
-    var o = {
+angular.module('PostService', []).factory('posts', ['$http', 'auth', '$q', function ($http, auth, $q) {
+    var post = {
         posts: []
     };
-    o.getAll= function () {
+    post.getAll= function () {
         return $http.get('/posts').success(function (data) {
-            angular.copy(data, o.posts);
+            angular.copy(data, post.posts);
         });
     };
-    o.getPendingPost= function () {
+    post.getPendingPost= function () {
         return $http.get('/posts/suggestedposts').success(function (data) {
-            angular.copy(data, o.posts);
+            angular.copy(data, post.posts);
         });
     };
-    o.removePost = function (id) {
+    post.removePost = function (id) {
         var deferred = $q.defer();
         $http.delete('/posts/suggestedposts/' + id).then(function (data) {
             deferred.resolve(data);
@@ -24,7 +24,7 @@ angular.module('chessFederation', []).factory('posts', ['$http', 'auth', '$q', f
         });
         return deferred.promise;
     };
-    o.deleteComment = function (postId, commentId) {
+    post.deleteComment = function (postId, commentId) {
         var deferred = $q.defer();
         $http.delete('/posts/' + postId + '/comments/' + commentId).then(function (data) {
             deferred.resolve(data);
@@ -34,7 +34,7 @@ angular.module('chessFederation', []).factory('posts', ['$http', 'auth', '$q', f
         return deferred.promise;
     };
 
-    o.approvePost = function (id) {
+    post.approvePost = function (id) {
         var deferred = $q.defer();
         $http.patch('/posts/suggestedposts/' + id).then(function (data) {
             deferred.resolve(data);
@@ -44,40 +44,40 @@ angular.module('chessFederation', []).factory('posts', ['$http', 'auth', '$q', f
         return deferred.promise;
     };
 
-    o.saveChange = function (id, post) {
+    post.saveChange = function (id, post) {
         return $http.patch('/posts/suggestedposts/edit/' + id, post,
             {headers: {Authorization: 'Bearer '+auth.getToken()}
             }).success(function (data) {
-            // o.posts.push(data);
+            // post.posts.push(data);
         });
     };
 
-    o.create = function (post) {
+    post.create = function (post) {
         return $http.post('/posts/addpost', post,
             {headers: {Authorization: 'Bearer '+auth.getToken()}
             }).success(function (data) {
-            o.posts.push(data);
+            post.posts.push(data);
         });
     };
-    o.upvote = function (post) {
+    post.upvote = function (post) {
         return $http.put('/posts/' + post._id + '/upvote', null,
             { headers: {Authorization: 'Bearer '+auth.getToken()}
             }).success(function(data) {
             post.upvotes += 1;
         });
     };
-    o.get = function(id){
+    post.get = function(id){
         return $http.get('/posts/' + id).then(function(res){
             return res.data;
         });
     };
 
-    o.addComments = function(id, comment) {
+    post.addComments = function(id, comment) {
         return $http.post('/posts/' + id + '/comments', comment,{
             headers: {Authorization: 'Bearer '+auth.getToken()}
         });
     };
-    o.upvoteComment = function (post, comment) {
+    post.upvoteComment = function (post, comment) {
         return $http.put('/posts/' + post._id + '/comments/' + comment._id + '/upvote', null, {
             headers: {Authorization: 'Bearer '+auth.getToken()}
         }).success(function (data) {
@@ -85,5 +85,5 @@ angular.module('chessFederation', []).factory('posts', ['$http', 'auth', '$q', f
         });
     };
 
-    return o;
+    return post;
 }]);

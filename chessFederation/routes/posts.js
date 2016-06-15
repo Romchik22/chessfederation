@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var postsController = require("../Post/PostController.js");
-var commentController = require("../Comment/CommentController.js");
+var postsController = require("../controllers/PostController.js");
+var commentController = require("../controllers/CommentController.js");
 var jwt = require('express-jwt');
 var auth = jwt({secret: 'SECRET', userProperty:'payload'});
 var mongoose = require('mongoose');

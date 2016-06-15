@@ -1,7 +1,7 @@
 /**
  * Created by sobolrr on 14.06.16.
  */
-angular.module('chessFederation', []).app.controller('UserCtrl', [
+angular.module('UserCtrl', []).controller('UserCtrl', [
     '$scope',
     'users',
     'user',

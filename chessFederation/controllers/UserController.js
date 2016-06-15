@@ -3,11 +3,10 @@
  */
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var Schema = mongoose.Schema;
 
 module.exports = {
     
-    //getUsers users/userlist/
+    //get /users/userlist/
     getUsers: function (req, res, next) {
         User.find({role: {$ne: 'moderator'} }, function (err, users) {
             if (err) {
@@ -16,7 +15,8 @@ module.exports = {
             res.json(users);
         });
     },
-
+    
+    //get /users/userlist/useredit/:user
     getUser: function (req, res, next) {
         User.findById(req.params.user, function (err, user) {
             if (err) {
@@ -31,13 +31,14 @@ module.exports = {
     removeUser: function (req, res, next) {
         User.findByIdAndRemove(req.params.user, function (err) {
             if (err) {
-                next(err);
+               return next(err);
             }
             console.log('User deleted!');
             res.send(200);
         });
     },
 
+    //patch /users/userlist/:user
     changeRole: function (req, res, next) {
         User.findById(req.params.user, function (err, user) {
             if (err) {
@@ -51,7 +52,7 @@ module.exports = {
             }
             user.save(function(err) {
                 if (err) {
-                    next(err);
+                   return next(err);
                 }
                 console.log('status changed');
                 res.send(200);
@@ -61,6 +62,7 @@ module.exports = {
         });
     },
 
+    //patch /users/userlist/useredit/:user
     saveChange: function (req, res, next) {
 
         var user = new User(req.body);
@@ -76,12 +78,11 @@ module.exports = {
               city: user.city,
               rank: user.rank }, function (err) {
             if (err) {
-                next(err);
-                res.send(err);
+               return next(err);
             }
             console.log('Post Update!');
             res.send(200);
         });
     }
     
-}
+};

@@ -8,14 +8,16 @@ var passport = require('passport');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://sdima:dimas@ds019491.mlab.com:19491/romadiploma');
-require('./Comment/CommentModel');
-require('./Post/PostModel');
-require('./User/UserModel');
+require('./models/PostModel');
+require('./models/UserModel');
+require('./models/CommentModel');
 require('./config/passport');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var posts = require('./routes/posts');
+
+
 var app = express();
 
 // view engine setup

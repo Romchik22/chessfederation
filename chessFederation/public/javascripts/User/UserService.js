@@ -1,22 +1,22 @@
 /**
  * Created by sobolrr on 14.06.16.
  */
-angular.module('chessFederation', []).factory('users',['$http', 'auth', '$q', function ($http, auth, $q) {
-    var u = {
+angular.module('UserService', []).factory('users',['$http', 'auth', '$q', function ($http, auth, $q) {
+    var user = {
         users: []
     };
-    u.getUser = function(id){
+    user.getUser = function(id){
         return $http.get('users/userlist/useredit/' + id).then(function(res){
             return res.data;
         });
     };
-    u.getUserList= function () {
+    user.getUserList= function () {
         return $http.get('users/userlist/').success(function (data) {
-            angular.copy(data, u.users);
+            angular.copy(data, user.users);
         });
     };
 
-    u.removeUser = function (id) {
+    user.removeUser = function (id) {
         var deferred = $q.defer();
         $http.delete('/users/userlist/' + id).then(function (data) {
             deferred.resolve(data);
@@ -26,7 +26,7 @@ angular.module('chessFederation', []).factory('users',['$http', 'auth', '$q', fu
         return deferred.promise;
     };
 
-    u.changeRole = function (id) {
+    user.changeRole = function (id) {
         var deferred = $q.defer();
         $http.patch('/users/userlist/' + id).then(function (data) {
             deferred.resolve(data);
@@ -35,12 +35,12 @@ angular.module('chessFederation', []).factory('users',['$http', 'auth', '$q', fu
         });
         return deferred.promise;
     };
-    u.saveUserChange = function (id, user) {
+    user.saveUserChange = function (id, user) {
         return $http.patch('/users/userlist/useredit/' + id, user,
             {headers: {Authorization: 'Bearer '+auth.getToken()}
             }).success(function (data) {
             // o.posts.push(data);
         });
     };
-    return u;
+    return user;
 }]);

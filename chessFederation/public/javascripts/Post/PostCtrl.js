@@ -1,18 +1,16 @@
 /**
  * Created by sobolrr on 14.06.16.
  */
-angular.module('chessFederation', []).controller('PostCtrl',[
+angular.module('PostCtrl', []).controller('PostCtrl',[
     '$scope',
     'posts',
     'post',
     'auth',
     function ($scope, posts, post, auth) {
         $scope.post = post;
-        // This is temporary solutions, for fast explanation.
-        // We must find best way to implement this logic.
         $scope.posts = post.data;
-        // $scope.comments = post.comments;
         $scope.isLoggedIn = auth.isLoggedIn;
+        
         $scope.addComment = function(){
             if($scope.body === '') { return; }
             posts.addComments(post._id, {

@@ -4,7 +4,6 @@
 var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
-var Schema = mongoose.Schema;
 module.exports = {
     // Post posts/:post/comments
     addComment: function (req, res, next) {
@@ -18,7 +17,7 @@ module.exports = {
                 return next(err);
             }
             req.post.comments.push(comment);
-            req.post.save(function (err, post) {
+            req.post.save(function (err) {
                 if (err) {
                     return next(err);
                 }
@@ -36,8 +35,7 @@ module.exports = {
     deleteComment: function (req, res, next) {
         Comment.findByIdAndRemove(req.params.comment, function (err) {
             if (err) {
-                next(err);
-                res.send(err);
+                return next(err);
             }
             req.post.populate('comments', function (err, post) {
                 if(err){return next(err);}
@@ -50,11 +48,10 @@ module.exports = {
     // Put /posts/:post/comments/:comment/upvote
     upvoteComment: function (req, res, next) {
         req.comment.upvote(function (err, comment) {
-            // todo Investigate err handling
             if (err) {
                 return next(err);
             }
             res.json(comment);
         });
-    },
+    }
 };

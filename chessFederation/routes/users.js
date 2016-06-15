@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var usersController = require("../User/UserController.js");
+var usersController = require('../controllers/UserController');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
